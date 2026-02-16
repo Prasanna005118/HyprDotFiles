@@ -1,0 +1,59 @@
+configuration {
+    show-icons: false;
+    font: "JetBrains Mono Nerd Font 11";
+}
+
+* {
+    background:     #00000000;
+    background-alt: @color0;
+    foreground:     @color7;
+    selected:       @color4;
+    active:         @color6;
+    urgent:         @color1;
+}
+
+window {
+    location: center;
+    anchor: center;
+    width: 500px;
+    border-radius: 20px;
+    background-color: @background-alt;
+}
+
+mainbox {
+    padding: 20px;
+    background-color: transparent;
+}
+
+listview {
+    lines: 8;
+    spacing: 10px;
+    background-color: transparent;
+}
+
+element {
+    padding: 12px;
+    border-radius: 12px;
+    background-color: transparent;
+    text-color: @foreground;
+}
+
+element selected {
+    background-color: @selected;
+    text-color: @background-alt;
+}
+
+textbox-prompt-colon {
+    str: "";
+    padding: 10px 12px;
+    background-color: @color1;
+    text-color: @background-alt;
+    border-radius: 100%;
+}
+
+entry {
+    padding: 10px 14px;
+    border-radius: 100%;
+    background-color: @color0;
+    text-color: @foreground;
+}

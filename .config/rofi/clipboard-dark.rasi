@@ -1,0 +1,75 @@
+configuration {
+    show-icons: false;
+    font: "JetBrains Mono 11";
+}
+
+* {
+    bg:    rgba(24,18,40,0.97);
+    hi:    rgba(46,36,74,0.92);
+    fg:    #f2f2ee;
+
+    background: transparent;
+    foreground: @fg;
+}
+
+/* Window */
+window {
+    location: center;
+    anchor: center;
+    width: 620px;
+    border-radius: 22px;
+    background-color: @bg;
+}
+
+/* Main layout */
+mainbox {
+    padding: 18px;
+    spacing: 12px;
+    background-color: transparent;
+}
+
+/* Search */
+inputbar {
+    padding: 10px 14px;
+    border-radius: 14px;
+    background-color: @hi;
+    children: [ entry ];
+}
+
+textbox-prompt-colon { enabled: false; }
+
+entry {
+    background-color: transparent;
+    text-color: @fg;
+    placeholder: "";
+}
+
+/* List */
+listview {
+    lines: 8;
+    spacing: 8px;
+    scrollbar: false;
+    background-color: transparent;
+}
+
+/* Rows */
+element {
+    padding: 8px 10px;
+    border-radius: 12px;
+    background-color: transparent;
+    text-color: @fg;
+}
+
+element selected {
+    background-color: @hi;
+}
+
+/* Text */
+element-text {
+    text-color: @fg;
+}
+
+/* Absolute kill-switch for white backgrounds */
+textbox, box, listview, viewport {
+    background-color: transparent;
+}

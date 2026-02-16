@@ -1,0 +1,69 @@
+* {
+    background:     #1a1a2e;
+    background-alt: #252541;
+    foreground:     #ffffff;
+    selected:       #252541;
+    active:         #ffffff;
+    urgent:         #888888;
+}
+
+@import "~/.cache/wal/colors-rofi-dark.rasi"
+
+window {
+    background-color: @background;
+    width: 800px;
+    padding: 0;
+    border: 0;
+}
+
+mainbox {
+    background-color: @background;
+    children: [inputbar, listview];
+}
+
+inputbar {
+    background-color: @background;
+    padding: 12px;
+    children: [prompt, entry];
+}
+
+prompt {
+    background-color: @background;
+    text-color: #ffffff;
+    padding: 0 12px 0 0;
+}
+
+entry {
+    background-color: @background;
+    text-color: #ffffff;
+    placeholder-color: @urgent;
+}
+
+listview {
+    background-color: @background;
+    lines: 6;
+    columns: 2;
+    padding: 8px;
+}
+
+element {
+    background-color: @background;
+    text-color: #ffffff;
+    padding: 8px;
+    orientation: vertical;
+}
+
+element selected {
+    background-color: @selected;
+    text-color: #ffffff;
+}
+
+element-icon {
+    size: 128px;
+    margin: 0 0 8px 0;
+}
+
+element-text {
+    horizontal-align: 0.5;
+    text-color: #ffffff;
+}

@@ -1,0 +1,21 @@
+# Caches
+.cache/
+*.log
+*.tmp
+
+# Session / runtime
+*.lock
+*.pid
+
+# Secrets
+**/secrets.*
+**/*.key
+**/*.pem
+
+# Thumbnails
+**/thumbs/
+**/.thumbnails/
+
+# OS junk
+.DS_Store
+Thumbs.db

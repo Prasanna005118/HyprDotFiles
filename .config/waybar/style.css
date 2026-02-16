@@ -1,0 +1,98 @@
+@import '/home/primary-user/.cache/wal/colors-waybar.css';
+@import 'colors/colors.css';
+
+* {
+    border: none;
+    border-radius: 0px;
+    font-family: "JetBrainsMono Font Mono 11";
+    font-size: 13px;
+    min-height: 0;
+    padding: 0;
+    margin: 0;
+}
+
+window#waybar {
+    background: transparent;
+}
+
+/* ───────── Tooltip ───────── */
+
+tooltip {
+    background: @color0;
+    border: 1px solid @color8;
+    border-radius: 12px;
+}
+
+tooltip label {
+    color: @color7;
+    padding: 6px;
+}
+
+/* ───────── Workspaces ───────── */
+
+#workspaces {
+    background-color: @color0;
+    padding: 6px 4px;
+    margin-left: 12px;
+    border-radius: 18px;
+    border: 1px solid @color8;
+    color: @color7;
+}
+
+#workspaces button {
+    padding: 0px 8px;
+    margin: 0px 4px;
+    border-radius: 50px;
+    background-color: @color1;
+    color: transparent;
+    transition: all 0.3s ease;
+}
+
+#workspaces button:hover {
+    background-color: @color5;
+    color: @color0;
+    min-width: 46px;
+}
+
+#workspaces button.active {
+    background-color: @color4;
+    color: @color0;
+    min-width: 50px;
+    font-weight: bold;
+}
+
+/* ───────── Modules ───────── */
+
+#battery,
+#pulseaudio,
+#network,
+#clock,
+#custom-notification {
+    background-color: @color0;
+    padding: 0 16px;
+    margin-left: 12px;
+    border-radius: 50px;
+    border: 1px solid @color8;
+}
+
+/* ───────── Individual accents ───────── */
+
+#clock {
+    color: @color4;
+}
+
+#pulseaudio {
+    color: @color3;
+}
+
+#network {
+    color: @color6;
+}
+
+#battery {
+    color: @color2;
+}
+
+#custom-notification {
+    color: @color7;
+}
