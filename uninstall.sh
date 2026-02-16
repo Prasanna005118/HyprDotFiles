@@ -1,24 +1,57 @@
 #!/usr/bin/env bash
 set -e
 
-DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
-CONFIG_DIR="$HOME/.config"
+echo "==> Uninstalling dotfiles setup"
 
-echo "==> Removing dotfiles symlinks"
+# -----------------------------
+# 1. Remove configs
+# -----------------------------
+echo "==> Removing configs"
 
-remove_link() {
-  local target="$1"
-  if [ -L "$CONFIG_DIR/$target" ]; then
-    rm "$CONFIG_DIR/$target"
-    echo "Removed symlink: $target"
+rm -rf ~/.config/hypr
+rm -rf ~/.config/rofi
+rm -rf ~/.config/kitty
+rm -rf ~/.config/waybar
+rm -rf ~/.config/swaync
+
+# -----------------------------
+# 2. Remove wallpapers
+# -----------------------------
+echo "==> Removing wallpapers"
+
+rm -rf ~/Pictures/Wallpapers
+
+# -----------------------------
+# 3. Remove pywal cache
+# -----------------------------
+rm -rf ~/.cache/wal
+
+# -----------------------------
+# 4. Optional: remove packages
+# -----------------------------
+read -rp "Remove installed packages (rofi, waybar, pywal, etc)? [y/N]: " CONFIRM
+
+if [[ "$CONFIRM" =~ ^[Yy]$ ]]; then
+  sudo pacman -Rns --noconfirm \
+    rofi \
+    kitty \
+    waybar \
+    swaync \
+    thunar \
+    python-pywal \
+    grim \
+    slurp \
+    swww \
+    wl-clipboard \
+    imagemagick \
+    jq \
+    flatpak || true
+
+  if command -v yay &>/dev/null; then
+    yay -Rns --noconfirm rofi-emoji || true
   fi
-done
+fi
 
-for dir in hypr waybar rofi kitty swaync scripts; do
-  remove_link "$dir"
-done
+echo "==> Uninstall complete. You may want to log out."
 
-echo
-echo "==> Dotfiles uninstalled."
-echo "==> Backups (.bak) were NOT deleted."
 

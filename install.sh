@@ -1,75 +1,93 @@
 #!/usr/bin/env bash
 set -e
 
-DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
-CONFIG_DIR="$HOME/.config"
-
-echo "==> Installing dotfiles from $DOTFILES_DIR"
+echo "==> Installing dotfiles setup"
 
 # -----------------------------
-# 1. Packages (minimal, needed)
+# 1. Ensure base tools
 # -----------------------------
-echo "==> Installing required packages"
-
 sudo pacman -S --needed --noconfirm \
-  hyprland waybar rofi kitty swaync \
-  grim slurp wl-clipboard cliphist \
-  swww libnotify \
+  git \
+  base-devel \
+  curl \
+  wget \
+  wl-clipboard \
+  grim \
+  slurp \
+  swww \
+  rofi \
+  kitty \
+  waybar \
+  swaync \
   thunar \
-  nwg-look adw-gtk-theme \
-  ttf-jetbrains-mono-nerd
+  python-pywal \
+  imagemagick \
+  jq
 
 # -----------------------------
-# 2. Create config dir
+# 2. Install yay (AUR helper)
 # -----------------------------
-mkdir -p "$CONFIG_DIR"
+if ! command -v yay &>/dev/null; then
+  echo "==> Installing yay"
+  git clone https://aur.archlinux.org/yay.git /tmp/yay
+  (cd /tmp/yay && makepkg -si --noconfirm)
+fi
 
 # -----------------------------
-# 3. Backup existing configs
+# 3. Install AUR packages
 # -----------------------------
-backup() {
-  local target="$1"
-  if [ -e "$CONFIG_DIR/$target" ] && [ ! -L "$CONFIG_DIR/$target" ]; then
-    echo "Backing up $target → $target.bak"
-    mv "$CONFIG_DIR/$target" "$CONFIG_DIR/$target.bak"
-  fi
-}
-
-for dir in hypr waybar rofi kitty swaync scripts; do
-  backup "$dir"
-done
+yay -S --needed --noconfirm \
+  rofi-emoji
 
 # -----------------------------
-# 4. Symlink configs
+# 4. Install Flatpak
 # -----------------------------
-echo "==> Symlinking configs"
+sudo pacman -S --needed --noconfirm flatpak
 
-for dir in hypr waybar rofi kitty swaync scripts; do
-  ln -snf "$DOTFILES_DIR/.config/$dir" "$CONFIG_DIR/$dir"
-done
-
-# -----------------------------
-# 5. Clipboard daemon (Hyprland)
-# -----------------------------
-echo "==> Ensuring clipboard history autostart"
-
-HYPR_CONF="$CONFIG_DIR/hypr/hyprland.conf"
-
-grep -q cliphist "$HYPR_CONF" || cat >>"$HYPR_CONF" <<'EOF'
-
-# Clipboard history
-exec-once = wl-paste --type text --watch cliphist store
-exec-once = wl-paste --type image --watch cliphist store
-EOF
+if ! flatpak remote-list | grep -q flathub; then
+  echo "==> Adding Flathub"
+  sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+fi
 
 # -----------------------------
-# 6. Permissions
+# 5. Copy dotfiles
 # -----------------------------
-chmod +x "$CONFIG_DIR/scripts"/*.sh 2>/dev/null || true
+echo "==> Copying configs"
+
+mkdir -p ~/.config
+cp -r .config/* ~/.config/
 
 # -----------------------------
-# 7. Final notes
+# 6. Install wallpapers (test set)
 # -----------------------------
-echo
-echo "==> Install complete."
-echo "==> Log out and log back in for everything to apply."
+echo "==> Installing wallpapers"
+
+mkdir -p ~/Pictures/Wallpapers
+cp -r Wallpapers/* ~/Pictures/Wallpapers/
+
+# -----------------------------
+# 7. Set executable permissions
+# -----------------------------
+chmod +x ~/.config/hypr/scripts/*.sh 2>/dev/null || true
+
+# -----------------------------
+# 8. Initialize wallpaper + pywal
+# -----------------------------
+FIRST_WALLPAPER=$(ls ~/Pictures/Wallpapers | head -n 1)
+
+if [ -n "$FIRST_WALLPAPER" ]; then
+  swww img "$HOME/Pictures/Wallpapers/$FIRST_WALLPAPER" \
+    --transition-type grow \
+    --transition-duration 0.6
+  wal -i "$HOME/Pictures/Wallpapers/$FIRST_WALLPAPER" -n
+fi
+
+# -----------------------------
+# 9. Reload services
+# -----------------------------
+pkill waybar || true
+waybar &
+
+echo "==> Install complete. Reload Hyprland if needed."
+
+
